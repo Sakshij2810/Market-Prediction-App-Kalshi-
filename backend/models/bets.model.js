@@ -17,7 +17,7 @@ const betSchema = mongoose.Schema(
       required: true,
     },
   },
-  { timeStamp: true },
+  { timestamps: true },
 );
 
 const Bet = mongoose.model("Bet", betSchema);

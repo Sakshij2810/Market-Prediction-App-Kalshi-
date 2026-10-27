@@ -30,7 +30,7 @@ const marketSchema = mongoose.Schema(
       default: null,
     },
   },
-  { timeStamps: true },
+  { timestamps: true },
 );
 
 const Market = mongoose.model("Market", marketSchema);

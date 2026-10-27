@@ -11,7 +11,7 @@ import { auth } from "../middleware/auth.middleware.js";
 const authRouter = express.Router();
 
 authRouter.post("/signup", signup);
-authRouter.get("/signin", signin);
+authRouter.post("/signin", signin);
 
 authRouter.post("/onramp", auth, addFakeBalance);
 authRouter.get("/profile", auth, getUserProfile);

@@ -44,7 +44,8 @@ export const signup = async (req, res) => {
     return res.status(201).json({
       message: "User created successfully",
       id: newUser._id,
-      newUser,
+      username: newUser.username,
+      balance: newUser.balance,
     });
   } catch (error) {
     return res.status(500).json({
@@ -72,6 +73,12 @@ export const signin = async (req, res) => {
 
     // 2. find user with username
     const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(401).json({
+        error: "Invalid credentials",
+      });
+    }
 
     // 3. compare user.password with hashedPassword
     const validPassword = await bcrypt.compare(password, user.password);
@@ -185,12 +192,6 @@ export const getUserWalletHistory = async (req, res) => {
     const { userId } = req.user;
 
     const walletHistory = await Wallet.find({ userId: userId });
-
-    if (!walletHistory) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Wallet History not found" });
-    }
 
     return res.status(200).json({ success: true, walletHistory });
   } catch (error) {

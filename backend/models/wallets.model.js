@@ -20,7 +20,7 @@ const walletSchema = mongoose.Schema(
       required: true,
     },
   },
-  { timeStamp: true },
+  { timestamps: true },
 );
 
 const Wallet = mongoose.model("Wallet", walletSchema);

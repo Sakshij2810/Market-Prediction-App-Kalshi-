@@ -11,5 +11,5 @@ export const createMarketSchema = z.object({
 // "/api/v1/market/bet" req.body
 export const placeBetSchema = z.object({
   marketId: z.string(),
-  amount: z.number().int().positive(),
+  betAmount: z.number().int().positive(),
 });

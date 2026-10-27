@@ -1,4 +1,5 @@
 import express from "express";
+import { auth } from "../middleware/auth.middleware.js";
 import {
   createMarket,
   listAllBets,
@@ -8,9 +9,10 @@ import {
 
 const marketRouter = express.Router();
 
-marketRouter.get("/", createMarket);
-marketRouter.post("/", listAllMarkets);
-marketRouter.get("/bets", listAllBets);
-marketRouter.post("/bet", placeBet);
+marketRouter.post("/", auth, createMarket);
+marketRouter.get("/", listAllMarkets);
+
+marketRouter.post("/bet", auth, placeBet);
+marketRouter.get("/bets", auth, listAllBets);
 
 export default marketRouter;

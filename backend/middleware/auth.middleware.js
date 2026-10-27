@@ -7,7 +7,7 @@ export const auth = async (req, res, next) => {
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res
-        .satatus(401)
+        .status(401)
         .json({ success: false, message: "Access denied. Token missing." });
     }
     // 2. Extract token
