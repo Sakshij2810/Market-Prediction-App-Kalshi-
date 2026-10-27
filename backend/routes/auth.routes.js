@@ -14,7 +14,7 @@ authRouter.post("/signup", signup);
 authRouter.get("/signin", signin);
 
 authRouter.post("/onramp", auth, addFakeBalance);
-authRouter.post("/profile", auth, getUserProfile);
-authRouter.post("/transactions", auth, getUserWalletHistory);
+authRouter.get("/profile", auth, getUserProfile);
+authRouter.get("/transactions", auth, getUserWalletHistory);
 
 export default authRouter;

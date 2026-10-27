@@ -47,7 +47,7 @@ export const signup = async (req, res) => {
       newUser,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Internal Server Error",
       error: error.message,
@@ -92,7 +92,11 @@ export const signin = async (req, res) => {
       token,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -131,7 +135,6 @@ export const addFakeBalance = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
-    console.log(updatedUser);
     // 3. create wallent transaction entry for "onramp" transaction type
     await Wallet.create({
       userId: userId,
@@ -139,36 +142,62 @@ export const addFakeBalance = async (req, res) => {
       amount: amount,
     });
 
-    console.log("wallet entry created");
-
     return res.status(200).json({
       success: true,
       message: "Added balance successfully",
       updateBalance: updatedUser.balance,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
 // Get user profile
 export const getUserProfile = async (req, res) => {
   try {
-    console.log("hi from getUserProfile controller");
+    const { userId } = req.user;
 
-    res.status(200).json({ success: true, message: "Login Successfully" });
+    const user = await User.findById({ _id: userId }).select("-password"); //.select("-password") is used to exclude the password field from the user data returned by MongoDB.
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    return res.status(200).json({ success: true, user });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
 // Wallet history
 export const getUserWalletHistory = async (req, res) => {
   try {
-    console.log("hi from getUserWalletHistory controller");
+    const { userId } = req.user;
 
-    res.status(200).json({ success: true, message: "Login Successfully" });
+    const walletHistory = await Wallet.find({ userId: userId });
+
+    if (!walletHistory) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Wallet History not found" });
+    }
+
+    return res.status(200).json({ success: true, walletHistory });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
