@@ -1,0 +1,20 @@
+import express from "express";
+import {
+  addFakeBalance,
+  getUserWalletHistory,
+  getUserProfile,
+  signin,
+  signup,
+} from "../controllers/auth.controller.js";
+import { auth } from "../middleware/auth.middleware.js";
+
+const authRouter = express.Router();
+
+authRouter.post("/signup", signup);
+authRouter.get("/signin", signin);
+
+authRouter.post("/onramp", auth, addFakeBalance);
+authRouter.post("/profile", auth, getUserProfile);
+authRouter.post("/transactions", auth, getUserWalletHistory);
+
+export default authRouter;
